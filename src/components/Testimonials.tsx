@@ -1,6 +1,9 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const testimonials = [
   {
@@ -36,7 +39,7 @@ const testimonials = [
 ];
 
 export default function Testimonials() {
-  const ref = useScrollReveal();
+  const sectionRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
 
   const next = useCallback(() => {
@@ -48,9 +51,52 @@ export default function Testimonials() {
     return () => clearInterval(interval);
   }, [next]);
 
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const ctx = gsap.context(() => {
+      // Header
+      gsap.fromTo(
+        ".test-header > *",
+        { opacity: 0, y: 60 },
+        {
+          opacity: 1, y: 0,
+          duration: 1, stagger: 0.15, ease: "power3.out",
+          scrollTrigger: { trigger: ".test-header", start: "top 85%" },
+        }
+      );
+
+      // Carousel slides up
+      gsap.fromTo(
+        ".test-carousel",
+        { opacity: 0, y: 80, scale: 0.95 },
+        {
+          opacity: 1, y: 0, scale: 1,
+          duration: 1.2, ease: "power3.out",
+          scrollTrigger: { trigger: ".test-carousel", start: "top 85%" },
+        }
+      );
+
+      // Dots animate in
+      gsap.fromTo(
+        ".test-dots",
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1, y: 0,
+          duration: 0.8, delay: 0.4, ease: "power2.out",
+          scrollTrigger: { trigger: ".test-carousel", start: "top 80%" },
+        }
+      );
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
       id="testimonials"
+      ref={sectionRef}
       className="relative py-[120px] overflow-hidden"
       style={{ background: "linear-gradient(135deg, #000428 0%, #004E92 100%)" }}
     >
@@ -60,13 +106,13 @@ export default function Testimonials() {
         style={{ background: "rgba(0,159,227,0.06)" }}
       />
 
-      <div ref={ref} className="scroll-reveal max-w-7xl mx-auto px-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Header */}
-        <div className="text-center mb-16">
-          <p className="stagger-child text-ocean font-semibold text-sm uppercase tracking-widest mb-4">
+        <div className="text-center mb-16 test-header">
+          <p className="text-ocean font-semibold text-sm uppercase tracking-widest mb-4">
             Testimonials
           </p>
-          <h2 className="stagger-child font-[family-name:var(--font-display)] text-4xl md:text-[48px] font-bold text-white leading-tight">
+          <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-[48px] font-bold text-white leading-tight">
             What Our Customers{" "}
             <span className="bg-gradient-to-r from-ocean to-mist bg-clip-text text-transparent">
               Say
@@ -76,7 +122,7 @@ export default function Testimonials() {
 
         {/* Carousel */}
         <div className="max-w-3xl mx-auto">
-          <div className="relative overflow-hidden">
+          <div className="test-carousel relative overflow-hidden">
             <div
               className="flex transition-transform duration-600"
               style={{
@@ -127,7 +173,7 @@ export default function Testimonials() {
           </div>
 
           {/* Dot Navigation */}
-          <div className="flex justify-center gap-2 mt-8">
+          <div className="test-dots flex justify-center gap-2 mt-8">
             {testimonials.map((_, i) => (
               <button
                 key={i}
