@@ -1,92 +1,124 @@
 "use client";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import RippleButton from "./RippleButton";
+import Image from "next/image";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const products = [
   {
-    name: "19L Gallon",
-    subtitle: "Home & Office Essential",
+    name: "Premium Natural Spring Water",
+    subtitle: "24 - 16 oz. Bottles Per Case",
     badge: "Most Popular",
     featured: true,
-    features: ["Perfect for families & offices", "Free dispenser available", "Subscribe & save 15%"],
-    price: "Rs. 150",
+    features: ["Sourced from protected natural springs", "Crisp, refreshing taste", "BPA-free recyclable bottles"],
+    image: "/content/product-1.jpg",
   },
   {
-    name: "1.5L Bottle",
-    subtitle: "Daily Hydration",
+    name: "Premium Alkaline Water Ph9+",
+    subtitle: "24 - 16 oz. Bottles Per Case",
     badge: null,
     featured: false,
-    features: ["Pack of 12 bottles", "Ideal for on-the-go", "Slim fridge-friendly design"],
-    price: "Rs. 350/pack",
+    features: ["Enhanced pH 9+ for optimal hydration", "Electrolyte-infused", "Smooth, clean finish"],
+    image: "/content/product-2.jpg",
   },
   {
-    name: "500ml Bottle",
-    subtitle: "Compact & Portable",
+    name: "Saint Michael Premium Sparkling Water",
+    subtitle: "24 - 16 oz. Bottles Per Case",
     badge: null,
     featured: false,
-    features: ["Pack of 24 bottles", "Perfect for events", "Recyclable PET material"],
-    price: "Rs. 480/pack",
+    features: ["Fine, effervescent bubbles", "Zero calories, zero sugar", "Perfect for any occasion"],
+    image: "/content/product-3.jpg",
   },
 ];
 
-function BottleIcon({ size = "lg" }: { size?: "lg" | "md" | "sm" }) {
-  const dims = size === "lg" ? { w: 80, h: 140 } : size === "md" ? { w: 50, h: 100 } : { w: 35, h: 70 };
-  return (
-    <svg viewBox="0 0 80 140" width={dims.w} height={dims.h} xmlns="http://www.w3.org/2000/svg">
-      <rect x="30" y="2" width="20" height="12" rx="2" fill="#009FE3" />
-      <rect x="28" y="12" width="24" height="8" rx="2" fill="#E6F7FF" />
-      <path
-        d="M28 20 L28 35 Q15 45 15 55 L15 120 Q15 135 30 135 L50 135 Q65 135 65 120 L65 55 Q65 45 52 35 L52 20 Z"
-        fill="url(#prodBottle)"
-        stroke="#009FE3"
-        strokeWidth="1"
-        strokeOpacity="0.3"
-      />
-      <rect x="20" y="65" width="40" height="40" rx="4" fill="rgba(0,159,227,0.1)" />
-      <text x="40" y="85" textAnchor="middle" fill="#009FE3" fontSize="7" fontWeight="bold" fontFamily="serif">Clear</text>
-      <text x="40" y="95" textAnchor="middle" fill="#004E92" fontSize="6" fontFamily="serif">Cool</text>
-      <defs>
-        <linearGradient id="prodBottle" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#E6F7FF" />
-          <stop offset="100%" stopColor="#B3ECFF" />
-        </linearGradient>
-      </defs>
-    </svg>
-  );
-}
-
 export default function Products() {
-  const ref = useScrollReveal();
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const ctx = gsap.context(() => {
+      // Header animation
+      gsap.fromTo(
+        ".products-header > *",
+        { opacity: 0, y: 50, rotationX: 15, transformPerspective: 800 },
+        {
+          opacity: 1, y: 0, rotationX: 0,
+          duration: 1, stagger: 0.15, ease: "power3.out",
+          scrollTrigger: { trigger: ".products-header", start: "top 85%" },
+        }
+      );
+
+      // Product cards stagger from bottom with scale
+      gsap.fromTo(
+        ".product-card",
+        { opacity: 0, y: 100, scale: 0.9 },
+        {
+          opacity: 1, y: 0, scale: 1,
+          duration: 0.9, stagger: 0.2, ease: "back.out(1.4)",
+          scrollTrigger: { trigger: ".products-grid", start: "top 80%" },
+        }
+      );
+
+      // Product images float in
+      gsap.fromTo(
+        ".product-image",
+        { opacity: 0, scale: 0.6, rotation: -5 },
+        {
+          opacity: 1, scale: 1, rotation: 0,
+          duration: 1, stagger: 0.25, ease: "elastic.out(1, 0.5)",
+          scrollTrigger: { trigger: ".products-grid", start: "top 75%" },
+        }
+      );
+
+      // Badges pop in
+      gsap.fromTo(
+        ".product-badge",
+        { opacity: 0, scale: 0, y: -20 },
+        {
+          opacity: 1, scale: 1, y: 0,
+          duration: 0.6, ease: "back.out(2)",
+          scrollTrigger: { trigger: ".products-grid", start: "top 75%" },
+        }
+      );
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section id="products" className="relative bg-light py-[120px] overflow-hidden">
+    <section id="products" ref={sectionRef} className="relative bg-light py-[120px] overflow-hidden">
       {/* Subtle water droplet SVG pattern */}
       <div className="absolute inset-0 opacity-[0.03]" style={{
         backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 10 C30 10 20 25 20 32 A10 10 0 0040 32 C40 25 30 10 30 10Z' fill='%23009FE3'/%3E%3C/svg%3E")`,
         backgroundSize: "60px 60px",
       }} />
 
-      <div ref={ref} className="scroll-reveal max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <p className="stagger-child text-ocean font-semibold text-sm uppercase tracking-widest mb-4">Our Products</p>
-          <h2 className="stagger-child font-[family-name:var(--font-display)] text-4xl md:text-[48px] font-bold text-dark leading-tight">
+        <div className="text-center mb-16 products-header">
+          <p className="text-ocean font-semibold text-sm uppercase tracking-widest mb-4">Our Products</p>
+          <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-[48px] font-bold text-dark leading-tight">
             Choose Your{" "}
             <span className="bg-gradient-to-r from-ocean to-deep bg-clip-text text-transparent">
               Perfect Fit
             </span>
           </h2>
-          <p className="stagger-child text-dark/50 text-lg mt-4 max-w-2xl mx-auto">
+          <p className="text-dark/50 text-lg mt-4 max-w-2xl mx-auto">
             From office gallons to personal bottles, we have the right size for every need.
           </p>
         </div>
 
         {/* Product Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 products-grid">
           {products.map((product, i) => (
             <div
               key={i}
-              className={`stagger-child group relative rounded-3xl p-8 transition-all duration-300 hover:-translate-y-3 ${
+              className={`product-card group relative rounded-3xl p-8 transition-all duration-300 hover:-translate-y-3 ${
                 product.featured
                   ? "bg-white border-2 border-ocean shadow-xl shadow-ocean/10 hover:shadow-2xl hover:shadow-ocean/18 hover:-translate-y-3.5"
                   : "bg-white/70 border border-ocean/10 hover:bg-light/80 hover:shadow-xl hover:shadow-ocean/18"
@@ -94,17 +126,21 @@ export default function Products() {
             >
               {/* Badge */}
               {product.badge && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-ocean text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg shadow-ocean/30">
+                <div className="product-badge absolute -top-3 left-1/2 -translate-x-1/2 bg-ocean text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg shadow-ocean/30">
                   {product.badge}
                 </div>
               )}
 
               {/* Product Image Area */}
               <div className="flex justify-center mb-8 pt-4">
-                <div className={`w-32 h-32 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-105 ${
-                  product.featured ? "bg-ocean/10" : "bg-light"
-                }`}>
-                  <BottleIcon size={product.featured ? "lg" : "md"} />
+                <div className="product-image h-52 w-full flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    width={200}
+                    height={300}
+                    className="h-full w-auto object-contain"
+                  />
                 </div>
               </div>
 

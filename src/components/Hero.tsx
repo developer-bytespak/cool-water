@@ -1,8 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
 import WaveBackground from "./WaveBackground";
 
 function HeroTextReveal() {
+  const textRef = useRef<HTMLDivElement>(null);
   const [stage, setStage] = useState(0);
 
   useEffect(() => {
@@ -16,6 +18,24 @@ function HeroTextReveal() {
     return () => timers.forEach(clearTimeout);
   }, []);
 
+  // Additional GSAP shimmer effect after text reveals
+  useEffect(() => {
+    if (stage < 5) return;
+    const el = textRef.current;
+    if (!el) return;
+
+    gsap.fromTo(
+      el,
+      { backgroundPosition: "-200%" },
+      {
+        backgroundPosition: "200%",
+        duration: 2,
+        delay: 0.5,
+        ease: "power2.inOut",
+      }
+    );
+  }, [stage]);
+
   const wordClass = (minStage: number) =>
     `inline-block transition-all duration-700 ${
       stage >= minStage
@@ -24,7 +44,7 @@ function HeroTextReveal() {
     }`;
 
   return (
-    <div className="space-y-6">
+    <div ref={textRef} className="space-y-6">
       {/* H1 */}
       <h1 className="font-[family-name:var(--font-display)] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight">
         <span className={wordClass(2)} style={{ transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)" }}>
@@ -46,9 +66,29 @@ function HeroTextReveal() {
 }
 
 export default function Hero() {
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return;
+
+    // Smooth parallax on the overlay gradient on scroll
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const overlay = el.querySelector(".hero-overlay") as HTMLElement;
+      if (overlay) {
+        gsap.to(overlay, { opacity: 0.6 + scrollY * 0.0005, duration: 0.3 });
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <section
       id="hero"
+      ref={heroRef}
       className="relative min-h-screen flex items-center overflow-hidden"
     >
       {/* Video Background */}
@@ -63,7 +103,7 @@ export default function Hero() {
       </video>
 
       {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 bg-dark/60" />
+      <div className="hero-overlay absolute inset-0 bg-dark/60" />
 
       {/* Parallax BG Layer */}
       <div

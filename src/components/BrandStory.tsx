@@ -1,6 +1,10 @@
 "use client";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const proofPoints = [
   {
@@ -34,42 +38,107 @@ const proofPoints = [
 ];
 
 export default function BrandStory() {
-  const ref = useScrollReveal();
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const ctx = gsap.context(() => {
+      // Text content slides in from left
+      gsap.fromTo(
+        ".story-text > *",
+        { opacity: 0, x: -60, rotationY: 5, transformPerspective: 800 },
+        {
+          opacity: 1, x: 0, rotationY: 0,
+          duration: 0.9, stagger: 0.12, ease: "power3.out",
+          scrollTrigger: { trigger: el, start: "top 75%" },
+        }
+      );
+
+      // Image slides in from right with scale
+      gsap.fromTo(
+        ".story-image",
+        { opacity: 0, x: 80, scale: 0.9 },
+        {
+          opacity: 1, x: 0, scale: 1,
+          duration: 1.1, ease: "power3.out",
+          scrollTrigger: { trigger: el, start: "top 75%" },
+        }
+      );
+
+      // Proof points stagger in
+      gsap.fromTo(
+        ".proof-point",
+        { opacity: 0, x: -40, y: 20 },
+        {
+          opacity: 1, x: 0, y: 0,
+          duration: 0.7, stagger: 0.15, ease: "back.out(1.2)",
+          scrollTrigger: { trigger: ".proof-points", start: "top 85%" },
+        }
+      );
+
+      // Floating glass card inside image
+      gsap.fromTo(
+        ".story-glass-card",
+        { opacity: 0, y: 30, scale: 0.9 },
+        {
+          opacity: 1, y: 0, scale: 1,
+          duration: 0.8, delay: 0.4, ease: "power2.out",
+          scrollTrigger: { trigger: ".story-image", start: "top 70%" },
+        }
+      );
+
+      // Parallax on the blob
+      gsap.to(".story-blob", {
+        yPercent: 30,
+        ease: "none",
+        scrollTrigger: {
+          trigger: el,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section id="brand-story" className="relative bg-white py-16 md:py-20 overflow-hidden">
+    <section id="brand-story" ref={sectionRef} className="relative bg-white py-16 md:py-20 overflow-hidden">
       {/* Blob behind image */}
       <div
-        className="absolute top-[10%] left-[-5%] w-[500px] h-[500px] animate-[blob-morph_10s_ease-in-out_infinite_alternate]"
+        className="story-blob absolute top-[10%] left-[-5%] w-[500px] h-[500px] animate-[blob-morph_10s_ease-in-out_infinite_alternate]"
         style={{ background: "rgba(0,159,227,0.07)" }}
       />
 
-      <div ref={ref} className="scroll-reveal max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
         {/* Left - Content */}
-        <div className="space-y-6 order-2 lg:order-1">
-          <div className="stagger-child flex items-center gap-4">
+        <div className="story-text space-y-6 order-2 lg:order-1">
+          <div className="flex items-center gap-4">
             <div className="w-1 h-12 bg-gradient-to-b from-ocean to-deep rounded-full" />
             <div>
               <p className="text-ocean font-semibold text-sm uppercase tracking-widest">Our Story</p>
             </div>
           </div>
 
-          <h2 className="stagger-child font-[family-name:var(--font-display)] text-3xl md:text-[40px] font-bold text-dark leading-tight">
+          <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-[40px] font-bold text-dark leading-tight">
             Born from the{" "}
             <span className="bg-gradient-to-r from-ocean to-deep bg-clip-text text-transparent">
               Purest Source
             </span>
           </h2>
 
-          <p className="stagger-child text-dark/60 text-base leading-relaxed max-w-lg">
+          <p className="text-dark/60 text-base leading-relaxed max-w-lg">
             At Clear Cool Water, we believe water isn&apos;t just a necessity — it&apos;s an experience.
             Every drop travels through nature&apos;s finest filters before our advanced
             purification process ensures it meets the highest international standards.
           </p>
 
-          <div className="space-y-4">
+          <div className="proof-points space-y-4">
             {proofPoints.map((point, i) => (
-              <div key={i} className="stagger-child flex items-start gap-3">
+              <div key={i} className="proof-point flex items-start gap-3">
                 <div className="w-10 h-10 rounded-xl bg-light flex items-center justify-center shrink-0">
                   {point.icon}
                 </div>
@@ -83,7 +152,7 @@ export default function BrandStory() {
         </div>
 
         {/* Right - Image */}
-        <div className="stagger-child relative order-1 lg:order-2">
+        <div className="story-image relative order-1 lg:order-2">
           <div className="relative rounded-3xl overflow-hidden aspect-square bg-gradient-to-br from-light to-mist/30">
             <Image
               src="/content/water-1.jpg"
@@ -93,7 +162,7 @@ export default function BrandStory() {
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-deep/20 to-transparent" />
-            <div className="absolute bottom-6 left-6 right-6">
+            <div className="story-glass-card absolute bottom-6 left-6 right-6">
               <div className="glass-light rounded-2xl p-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-ocean/10 flex items-center justify-center">

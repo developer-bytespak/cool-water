@@ -1,6 +1,9 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const steps = [
   {
@@ -62,9 +65,40 @@ const steps = [
 ];
 
 export default function PurificationProcess() {
-  const sectionRef = useScrollReveal();
+  const sectionRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const [drawProgress, setDrawProgress] = useState(0);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const ctx = gsap.context(() => {
+      // Header
+      gsap.fromTo(
+        ".process-header > *",
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1, y: 0,
+          duration: 0.9, stagger: 0.15, ease: "power3.out",
+          scrollTrigger: { trigger: ".process-header", start: "top 85%" },
+        }
+      );
+
+      // Mobile steps
+      gsap.fromTo(
+        ".mobile-step",
+        { opacity: 0, x: -50 },
+        {
+          opacity: 1, x: 0,
+          duration: 0.7, stagger: 0.15, ease: "power3.out",
+          scrollTrigger: { trigger: ".mobile-timeline", start: "top 85%" },
+        }
+      );
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
 
   useEffect(() => {
     const svg = svgRef.current;
@@ -100,20 +134,20 @@ export default function PurificationProcess() {
   const lineLength = 800;
 
   return (
-    <section id="process" className="relative bg-white py-[120px] overflow-hidden">
+    <section id="process" ref={sectionRef} className="relative bg-white py-[120px] overflow-hidden">
       {/* Faint water texture */}
       <div className="absolute inset-0 opacity-[0.02]" style={{
         backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 10 Q60 30 50 50 Q40 70 50 90' stroke='%23009FE3' fill='none' strokeWidth='1'/%3E%3C/svg%3E")`,
         backgroundSize: "100px 100px",
       }} />
 
-      <div ref={sectionRef} className="scroll-reveal max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
-        <div className="text-center mb-20">
-          <p className="stagger-child text-ocean font-semibold text-sm uppercase tracking-widest mb-4">
+        <div className="text-center mb-20 process-header">
+          <p className="text-ocean font-semibold text-sm uppercase tracking-widest mb-4">
             Our Process
           </p>
-          <h2 className="stagger-child font-[family-name:var(--font-display)] text-4xl md:text-[48px] font-bold text-dark leading-tight">
+          <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-[48px] font-bold text-dark leading-tight">
             From Source to{" "}
             <span className="bg-gradient-to-r from-ocean to-deep bg-clip-text text-transparent">
               Your Glass
@@ -201,9 +235,9 @@ export default function PurificationProcess() {
         </div>
 
         {/* Mobile Timeline */}
-        <div className="lg:hidden space-y-8">
+        <div className="lg:hidden space-y-8 mobile-timeline">
           {steps.map((step, i) => (
-            <div key={i} className="stagger-child flex gap-6 items-start">
+            <div key={i} className="mobile-step flex gap-6 items-start">
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-ocean to-deep flex items-center justify-center shrink-0 shadow-lg shadow-ocean/20">
                 {step.icon}
               </div>
