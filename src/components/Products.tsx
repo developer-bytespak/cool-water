@@ -114,7 +114,7 @@ export default function Products() {
                   {product.name}
                 </h3>
                 <p className="text-dark/50 text-sm">{product.subtitle}</p>
-                <p className="text-ocean text-2xl font-bold">{product.price}</p>
+                {/* <p className="text-ocean text-2xl font-bold">{product.price}</p> */}
               </div>
 
               {/* Features */}
