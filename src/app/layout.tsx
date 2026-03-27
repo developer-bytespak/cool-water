@@ -17,10 +17,10 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "AquaPure | Premium Water Delivery in Karachi",
+  title: "Clear Cool Water | Premium Water Delivery in Tampa",
   description:
-    "Pure, safe, lab-tested water delivered to your home and office in Karachi. Same-day delivery. WHO Certified. 10,000+ happy customers.",
-  keywords: ["water delivery", "Karachi", "premium water", "bottled water", "home delivery"],
+    "Pure, safe, lab-tested water delivered to your home and office in Tampa, Florida. Same-day delivery. WHO Certified. 10,000+ happy customers.",
+  keywords: ["water delivery", "Tampa", "Florida", "premium water", "bottled water", "home delivery"],
 };
 
 export default function RootLayout({

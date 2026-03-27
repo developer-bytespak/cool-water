@@ -87,10 +87,10 @@ export default function BrandStory() {
           </h2>
 
           <p className="stagger-child text-dark/60 text-lg leading-relaxed max-w-lg">
-            At AquaPure, we believe water isn&apos;t just a necessity — it&apos;s an experience.
+            At Clear Cool Water, we believe water isn&apos;t just a necessity — it&apos;s an experience.
             Every drop travels through nature&apos;s finest filters before our advanced
             purification process ensures it meets the highest international standards.
-            Serving homes and offices across Karachi with water you can truly trust.
+            Serving homes and offices across Tampa with water you can truly trust.
           </p>
 
           <div className="space-y-6 pt-4">

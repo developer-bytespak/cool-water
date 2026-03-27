@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 const navLinks = [
   { label: "Home", href: "#hero" },
@@ -30,15 +31,16 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
-        <a href="#hero" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-full bg-ocean flex items-center justify-center">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2C12 2 5 10 5 15a7 7 0 0014 0c0-5-7-13-7-13z" fill="white" />
-            </svg>
-          </div>
-          <span className="font-[family-name:var(--font-display)] text-white text-xl font-bold tracking-tight">
-            Aqua<span className="text-ocean">Pure</span>
-          </span>
+        <a href="#hero" className="flex items-center gap-2 group">
+          <Image
+            src="/content/water-logo.png"
+            alt="Company Logo"
+            width={200}
+            height={60}
+            className="h-14 w-auto"
+            style={{ width: "auto" }}
+            priority
+          />
         </a>
 
         {/* Desktop Nav */}

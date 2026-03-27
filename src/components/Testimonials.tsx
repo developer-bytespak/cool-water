@@ -4,33 +4,33 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const testimonials = [
   {
-    text: "AquaPure has completely changed how we think about water at home. The taste is incredible, and delivery is always on time. We've been subscribers for over a year now.",
-    name: "Sarah Ahmed",
-    area: "DHA Phase 6",
+    text: "Clear Cool Water has completely changed how we think about water at home. The taste is incredible, and delivery is always on time. We've been subscribers for over a year now.",
+    name: "Sarah Mitchell",
+    area: "South Tampa",
     rating: 5,
   },
   {
-    text: "As a business owner, I need reliable water delivery for my office. AquaPure delivers consistently, and the quality is unmatched. My team can taste the difference.",
-    name: "Kamran Sheikh",
-    area: "Clifton",
+    text: "As a business owner, I need reliable water delivery for my office. Clear Cool Water delivers consistently, and the quality is unmatched. My team can taste the difference.",
+    name: "Kevin Brooks",
+    area: "Westchase",
     rating: 5,
   },
   {
-    text: "Switched from a local supplier to AquaPure six months ago. The difference is night and day. Crystal clear, no aftertaste, and their customer service is exceptional.",
-    name: "Fatima Rizvi",
-    area: "Gulshan-e-Iqbal",
+    text: "Switched from a local supplier to Clear Cool Water six months ago. The difference is night and day. Crystal clear, no aftertaste, and their customer service is exceptional.",
+    name: "Maria Lopez",
+    area: "Carrollwood",
     rating: 5,
   },
   {
-    text: "As a mother of three, water safety is my top priority. AquaPure gives me peace of mind knowing my children are drinking the purest water available in Karachi.",
-    name: "Ayesha Khan",
-    area: "PECHS",
+    text: "As a mother of three, water safety is my top priority. Clear Cool Water gives me peace of mind knowing my children are drinking the purest water available in Tampa.",
+    name: "Jessica Turner",
+    area: "Brandon",
     rating: 5,
   },
   {
-    text: "We installed AquaPure dispensers across our restaurant chain. Our customers frequently compliment the water quality. It's become part of our premium dining experience.",
-    name: "Hassan Malik",
-    area: "Saddar",
+    text: "We installed Clear Cool Water dispensers across our restaurant chain. Our customers frequently compliment the water quality. It's become part of our premium dining experience.",
+    name: "David Chen",
+    area: "New Tampa",
     rating: 5,
   },
 ];
@@ -117,7 +117,7 @@ export default function Testimonials() {
                       </div>
                       <div>
                         <p className="text-white font-semibold">{t.name}</p>
-                        <p className="text-white/40 text-sm">{t.area}, Karachi</p>
+                        <p className="text-white/40 text-sm">{t.area}, Tampa</p>
                       </div>
                     </div>
                   </div>
