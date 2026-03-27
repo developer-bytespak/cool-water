@@ -43,8 +43,8 @@ function BottleIcon({ size = "lg" }: { size?: "lg" | "md" | "sm" }) {
         strokeOpacity="0.3"
       />
       <rect x="20" y="65" width="40" height="40" rx="4" fill="rgba(0,159,227,0.1)" />
-      <text x="40" y="85" textAnchor="middle" fill="#009FE3" fontSize="8" fontWeight="bold" fontFamily="serif">Aqua</text>
-      <text x="40" y="95" textAnchor="middle" fill="#004E92" fontSize="6" fontFamily="serif">Pure</text>
+      <text x="40" y="85" textAnchor="middle" fill="#009FE3" fontSize="7" fontWeight="bold" fontFamily="serif">Clear</text>
+      <text x="40" y="95" textAnchor="middle" fill="#004E92" fontSize="6" fontFamily="serif">Cool</text>
       <defs>
         <linearGradient id="prodBottle" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#E6F7FF" />

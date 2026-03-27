@@ -2,9 +2,9 @@
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const areas = [
-  "DHA", "Clifton", "Gulshan-e-Iqbal", "PECHS", "Saddar",
-  "Gulistan-e-Johar", "North Nazimabad", "Bahria Town", "Malir",
-  "Korangi", "FB Area", "Scheme 33",
+  "South Tampa", "Westchase", "Carrollwood", "Brandon", "Riverview",
+  "Wesley Chapel", "Town 'n' Country", "Temple Terrace", "Lutz",
+  "Land O' Lakes", "Citrus Park", "New Tampa",
 ];
 
 const pins = [
@@ -30,13 +30,13 @@ export default function DeliveryArea() {
             Delivery Coverage
           </p>
           <h2 className="stagger-child font-[family-name:var(--font-display)] text-4xl md:text-[48px] font-bold text-dark leading-tight">
-            Delivering Across Karachi in{" "}
+            Delivering Across Tampa in{" "}
             <span className="bg-gradient-to-r from-ocean to-deep bg-clip-text text-transparent">
               Under 2 Hours
             </span>
           </h2>
           <p className="stagger-child text-dark/50 text-lg mt-4 max-w-2xl mx-auto">
-            From DHA to North Nazimabad, we cover all major areas of Karachi with same-day delivery.
+            From South Tampa to Wesley Chapel, we cover all major areas of Tampa with same-day delivery.
           </p>
         </div>
 
@@ -49,7 +49,7 @@ export default function DeliveryArea() {
               className="absolute inset-0 w-full h-full"
               xmlns="http://www.w3.org/2000/svg"
             >
-              {/* Karachi abstract shape */}
+              {/* Tampa abstract shape */}
               <path
                 d="M150 300 Q200 200 300 180 Q350 170 400 190 Q500 220 550 180 Q600 150 650 200 Q700 250 680 320 Q660 380 580 400 Q500 420 400 410 Q300 400 220 370 Q160 350 150 300Z"
                 fill="rgba(0,159,227,0.08)"
@@ -84,7 +84,7 @@ export default function DeliveryArea() {
 
             {/* Center label */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 glass-light rounded-2xl px-6 py-3">
-              <p className="text-dark font-bold text-sm">KARACHI</p>
+              <p className="text-dark font-bold text-sm">TAMPA</p>
               <p className="text-ocean text-xs font-medium">Full Coverage</p>
             </div>
           </div>

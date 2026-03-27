@@ -29,7 +29,7 @@ export default function FinalCTA() {
         </h2>
 
         <p className="stagger-child text-white/50 text-lg md:text-xl mt-6 max-w-2xl mx-auto">
-          Free delivery on your first order · Same-day delivery in Karachi
+          Free delivery on your first order · Same-day delivery in Tampa
         </p>
 
         <div className="stagger-child flex flex-wrap items-center justify-center gap-4 mt-10">
@@ -42,7 +42,7 @@ export default function FinalCTA() {
         </div>
 
         <p className="stagger-child text-white/30 text-sm mt-8">
-          Available 7 days a week · 8 AM to 10 PM · Karachi-wide delivery
+          Available 7 days a week · 8 AM to 10 PM · Tampa-wide delivery
         </p>
       </div>
     </section>
