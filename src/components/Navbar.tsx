@@ -25,7 +25,7 @@ export default function Navbar() {
     <nav
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-dark/90 backdrop-blur-xl border-b border-white/10 py-3"
+          ? "bg-white/95 backdrop-blur-xl border-b border-gray-200 py-3 shadow-sm"
           : "bg-transparent py-5"
       }`}
     >
@@ -49,7 +49,9 @@ export default function Navbar() {
             <a
               key={link.label}
               href={link.href}
-              className="text-white/70 hover:text-white text-sm font-medium transition-colors duration-300 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-ocean after:transition-all after:duration-300 hover:after:w-full"
+              className={`text-sm font-medium transition-colors duration-300 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-ocean after:transition-all after:duration-300 hover:after:w-full ${
+                scrolled ? "text-dark/70 hover:text-dark" : "text-white/70 hover:text-white"
+              }`}
             >
               {link.label}
             </a>
@@ -64,7 +66,7 @@ export default function Navbar() {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-white p-2"
+          className={`md:hidden p-2 transition-colors duration-300 ${scrolled ? "text-dark" : "text-white"}`}
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
